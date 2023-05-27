@@ -14,7 +14,16 @@ public class Consumer {
     public CountryEnum country;
     public HashMap<String, Object> queueHeaders = new HashMap<String, Object>();
     public String queueName = UUID.randomUUID().toString();
+    public String consumerName = "";
 
+    public String getConsumerName() {
+        return consumerName;
+    }
+
+    public void setConsumerName(String name) {
+        this.consumerName = name;
+        this.queueName = name + "-" + this.queueName;
+    }
     public CountryEnum getCountry() {
         return country;
     }
@@ -54,7 +63,7 @@ public class Consumer {
     public void receiveMessage() throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
         channel.basicConsume(this.queueName, true, (consumerTag, message) -> {
-            System.out.println("Received: ");
+            System.out.printf("----- CONSUMER %s -----\n", this.consumerName);
             System.out.println(new String(message.getBody()));
         }, (consumerTag) -> {
             System.out.println(consumerTag);

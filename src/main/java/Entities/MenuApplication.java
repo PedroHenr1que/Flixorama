@@ -2,12 +2,10 @@ package Entities;
 
 import Enums.CountryEnum;
 import Enums.GenderEnum;
+import com.rabbitmq.client.Channel;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class MenuApplication {
@@ -15,7 +13,10 @@ public class MenuApplication {
         Scanner scanner = new Scanner(System.in);
 
         try {
+            FanoutExchange.declareExchange();
             HeadersExchange.declareExchange();
+            Channel channel = ConnectionManager.getConnection().createChannel();
+            channel.exchangeBind("flix-fanout-exchange", "flix-exchange", "");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -29,15 +30,15 @@ public class MenuApplication {
         switch (choice) {
             case 1 -> {
                 Producer p = new Producer();
-                MenuApplication.producerMenu(p);
+                producerMenu(p);
             }
             case 2 -> {
                 Consumer c = new Consumer();
-                MenuApplication.consumerMenu(c);
+                consumerMenu(c);
             }
             case 3 -> {
-                System.out.println("audit");
                 Audit a = new Audit();
+                auditMenu(a);
             }
         }
     }
@@ -46,11 +47,14 @@ public class MenuApplication {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("##################################");
+        System.out.println("# Whats your name? ");
 
-        CountryEnum countryEnum = MenuApplication.getCountry();
+        c.setConsumerName(scanner.nextLine());
+
+        CountryEnum countryEnum = getCountry();
         c.setCountry(countryEnum);
 
-        List<GenderEnum> genderEnums = MenuApplication.getGenders();
+        List<GenderEnum> genderEnums = getGenders();
         c.setQueueHeaders(genderEnums);
 
         try {
@@ -75,7 +79,6 @@ public class MenuApplication {
         //content
         boolean newContent = true;
         while (newContent) {
-            MenuApplication.clear();
             HeadersMessage msg = new HeadersMessage();
             msg.setCountry(countryEnum);
             System.out.println("##################################");
@@ -96,11 +99,23 @@ public class MenuApplication {
                 p.sendMessage(msg);
                 System.out.println("# Another content(y/n)? ");
                 newContent = scanner.next().equals("y");
-                MenuApplication.clear();
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private static void auditMenu(Audit a) {
+        try {
+            a.declareQueue();
+            a.declareBinding();
+            a.receiveMessage();
+        } catch (IOException | TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("##################################");
+
     }
 
     private static CountryEnum getCountry() {
@@ -134,16 +149,6 @@ public class MenuApplication {
         } while (choice != -1);
 
         return contentGenders;
-    }
-    private static void clear() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            }
-            else {
-                System.out.print("\033\143");
-            }
-        } catch (IOException | InterruptedException ignored) {}
     }
 
 }
