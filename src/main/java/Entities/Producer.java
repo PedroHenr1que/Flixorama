@@ -26,7 +26,7 @@ public class Producer {
         BasicProperties properties = new BasicProperties
                 .Builder().headers(message.getHeaders()).build();
 
-        channel.basicPublish(HeadersExchange.headerExchangeName, "", properties, message.getFormattedMessage().getBytes());
+        channel.basicPublish(FanoutExchange.fanoutExchangeName, "", properties, message.getFormattedMessage().getBytes());
         channel.close();
     }
 }

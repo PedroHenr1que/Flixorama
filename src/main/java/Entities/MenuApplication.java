@@ -16,7 +16,7 @@ public class MenuApplication {
             FanoutExchange.declareExchange();
             HeadersExchange.declareExchange();
             Channel channel = ConnectionManager.getConnection().createChannel();
-            channel.exchangeBind("flix-fanout-exchange", "flix-exchange", "");
+            channel.exchangeBind("flix-exchange", "flix-fanout-exchange", "");
         } catch(Exception e) {
             e.printStackTrace();
         }

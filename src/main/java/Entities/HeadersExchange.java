@@ -10,7 +10,6 @@ public class HeadersExchange {
     public static final String headerExchangeName = "flix-exchange";
     public static void declareExchange() throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
-        //Declare my-header-exchange
         channel.exchangeDeclare(headerExchangeName, BuiltinExchangeType.HEADERS, true);
         channel.close();
     }
