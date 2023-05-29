@@ -1,14 +1,15 @@
-package Entities;
+package msg;
 
 import Enums.CountryEnum;
 import Enums.GenderEnum;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class HeadersMessage {
-    public HashMap<String, Object> headers = new HashMap<String, Object>();
+    public HashMap<String, Object> headers = new HashMap<>();
     public String title;
     public String content = "";
     public CountryEnum country;
@@ -45,7 +46,8 @@ public class HeadersMessage {
     }
 
     public String getFormattedMessage() {
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
-        return "[" + timeStamp + "] " + this.getTitle() + "\n" + this.getContent();
+        String timeStamp = new SimpleDateFormat("dd/MM/yyyy - HH.mm").format(new Date());
+        return "[" + timeStamp + "] " + "Flixorama - " + this.getCountry() + ": " + this.getTitle() + "arrived in our catalog!\n" +
+                "Genders: " + this.getHeaders().keySet().stream().toList();
     }
 }

@@ -1,4 +1,4 @@
-package Entities;
+package connection;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

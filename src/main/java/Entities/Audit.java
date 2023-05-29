@@ -1,6 +1,8 @@
 package Entities;
 
 import com.rabbitmq.client.Channel;
+import connection.ConnectionManager;
+import exchanges.FanoutExchange;
 
 import java.io.IOException;
 import java.util.UUID;

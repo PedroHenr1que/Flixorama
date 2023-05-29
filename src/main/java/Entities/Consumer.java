@@ -3,6 +3,8 @@ package Entities;
 import Enums.CountryEnum;
 import Enums.GenderEnum;
 import com.rabbitmq.client.Channel;
+import connection.ConnectionManager;
+import exchanges.HeadersExchange;
 
 import java.io.IOException;
 import java.util.HashMap;

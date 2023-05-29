@@ -3,6 +3,9 @@ package Entities;
 import Enums.CountryEnum;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
+import connection.ConnectionManager;
+import exchanges.FanoutExchange;
+import msg.HeadersMessage;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

@@ -1,8 +1,13 @@
-package Entities;
+package menu;
 
+import Entities.*;
 import Enums.CountryEnum;
 import Enums.GenderEnum;
 import com.rabbitmq.client.Channel;
+import connection.ConnectionManager;
+import exchanges.FanoutExchange;
+import exchanges.HeadersExchange;
+import msg.HeadersMessage;
 
 import java.io.IOException;
 import java.util.*;
@@ -20,13 +25,15 @@ public class MenuApplication {
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("What are you?");
-        System.out.println("1 - Producer");
-        System.out.println("2 - Consumer");
-        System.out.println("3 - Audit");
-
+        System.out.println("##################################");
+        System.out.println("# 1 - Producer");
+        System.out.println("# 2 - Consumer");
+        System.out.println("# 3 - Audit");
+        System.out.print("# What are you? ");
         int choice = scanner.nextInt();
+        System.out.println("##################################");
+
+
         switch (choice) {
             case 1 -> {
                 Producer p = new Producer();
@@ -47,8 +54,7 @@ public class MenuApplication {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("##################################");
-        System.out.println("# Whats your name? ");
-
+        System.out.print("# Whats your name? ");
         c.setConsumerName(scanner.nextLine());
 
         CountryEnum countryEnum = getCountry();
@@ -82,11 +88,11 @@ public class MenuApplication {
             HeadersMessage msg = new HeadersMessage();
             msg.setCountry(countryEnum);
             System.out.println("##################################");
-            System.out.println("# Content title: ");
+            System.out.print("# Content title: ");
             String contentName = scanner.nextLine();
             msg.setTitle(contentName);
 
-            System.out.println("# Description: ");
+            System.out.print("# Description: ");
             String contentDescription = scanner.nextLine();
             msg.setContent(contentDescription);
 
@@ -97,8 +103,9 @@ public class MenuApplication {
 
             try {
                 p.sendMessage(msg);
-                System.out.println("# Another content(y/n)? ");
+                System.out.print("# Another content(y/n)? ");
                 newContent = scanner.next().equals("y");
+
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -126,8 +133,9 @@ public class MenuApplication {
         for (int i = 0; i < countryEnums.size(); i++) {
             System.out.println("# " + (i+1) + " - " + countryEnums.get(i));
         }
-
-        return countryEnums.get(scanner.nextInt() - 1);
+        System.out.print("# Choose: ");
+        int choice = scanner.nextInt() - 1;
+        return countryEnums.get(choice);
     }
 
     private static List<GenderEnum> getGenders() {
@@ -141,8 +149,9 @@ public class MenuApplication {
             for (int i = 0; i < genderEnums.size(); i++) {
                 System.out.println("# " + (i+1) + " - " + genderEnums.get(i));
             }
-            System.out.println("# Choose(-1 to exit): ");
+            System.out.print("# Choose(-1 to stop choosing): ");
             choice = scanner.nextInt();
+
             if (choice != -1) {
                 contentGenders.add(genderEnums.get(choice - 1));
             }
