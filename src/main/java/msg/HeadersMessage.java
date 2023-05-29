@@ -47,7 +47,7 @@ public class HeadersMessage {
 
     public String getFormattedMessage() {
         String timeStamp = new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date());
-        return "[" + timeStamp + "] " + "Flixorama - " + this.getCountry() + ": " + this.getTitle() + " arrived in our catalog!\n" +
+        return "[" + timeStamp + "] " + "Flixorama - " + this.getCountry() + ": " + this.getTitle() + "\n" +
                 "Genders: " + this.getHeaders().keySet().stream().toList() + "\n" +
                 this.getContent();
     }
