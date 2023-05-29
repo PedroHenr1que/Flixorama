@@ -30,7 +30,7 @@ public class Audit {
     public void receiveMessage() throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
         channel.basicConsume(this.queueName, true, (consumerTag, message) -> {
-            System.out.println("-- AUDIT --");
+            System.out.println("------ AUDIT ------");
             System.out.println(new String(message.getBody()));
         }, (consumerTag) -> {
             System.out.println(consumerTag);

@@ -104,7 +104,7 @@ public class MenuApplication {
             try {
                 p.sendMessage(msg);
                 System.out.print("# Another content(y/n)? ");
-                newContent = scanner.next().equals("y");
+                newContent = scanner.nextLine().equals("y");
 
             } catch(Exception e) {
                 e.printStackTrace();
@@ -113,6 +113,9 @@ public class MenuApplication {
     }
 
     private static void auditMenu(Audit a) {
+
+        System.out.println("##################################");
+
         try {
             a.declareQueue();
             a.declareBinding();
@@ -120,8 +123,6 @@ public class MenuApplication {
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }
-
-        System.out.println("##################################");
 
     }
 
