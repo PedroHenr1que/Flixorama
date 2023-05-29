@@ -24,8 +24,7 @@ public class Producer {
     public void sendMessage(HeadersMessage message) throws IOException, TimeoutException {
         Channel channel = ConnectionManager.getConnection().createChannel();
 
-        System.out.println("Sending message...");
-        System.out.println(message.getHeaders());
+        System.out.println("Sending notification...");
         BasicProperties properties = new BasicProperties
                 .Builder().headers(message.getHeaders()).build();
 
